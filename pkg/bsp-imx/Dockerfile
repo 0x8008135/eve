@@ -10,8 +10,8 @@ RUN eve-alpine-deploy.sh
 
 SHELL ["/bin/bash", "-eo", "pipefail", "-c"]
 
-ENV UBOOT_TARGETS "imx8mq_evk imx8mp_pollux imx8mp_epc_r3720"
-ENV ATF_TARGETS "imx8mq_evk imx8mp_pollux imx8mp_epc_r3720"
+ENV UBOOT_TARGETS "imx8mq_evk imx8mp_pollux imx8mp_epc_r3720 imx8mp_edmg"
+ENV ATF_TARGETS "imx8mq_evk imx8mp_pollux imx8mp_epc_r3720 imx8mp_edmg"
 
 RUN mkdir /uboot-firmwares
 
@@ -39,10 +39,18 @@ ENV ATF_imx8mp_epc_r3720 "imx8mp"
 ENV ATF_SRC_imx8mp_epc_r3720 "epc-r3720"
 ENV ATF_UART_imx8mp_epc_r3720 "0x30880000"
 
+# TechNexion edm-g
+ENV ATF_COMMIT_imx8mp_edmg 5782363f92a2fdf926784449270433cf3ddf44bd
+ENV ATF_imx8mp_edmg "imx8mp"
+ENV ATF_SRC_imx8mp_edmg "edmg"
+ENV ATF_UART_imx8mp_edmg "0x30890000"
+
 # Repositories
 ADD https://github.com/nxp-imx/imx-atf.git#${ATF_COMMIT_imx8mq_evk} ${ATF_SRC_imx8mq_evk}
 ADD https://github.com/nxp-imx/imx-atf.git#${ATF_COMMIT_imx8mp_pollux} ${ATF_SRC_imx8mp_pollux}
 ADD https://github.com/nxp-imx/imx-atf.git#${ATF_COMMIT_imx8mp_epc_r3720} ${ATF_SRC_imx8mp_epc_r3720}
+ADD https://github.com/nxp-imx/imx-atf.git#${ATF_COMMIT_imx8mp_edmg} ${ATF_SRC_imx8mp_edmg}
+
 # hadolint ignore=DL3003,SC2086
 RUN for t in ${ATF_TARGETS}; do \
         target=$(eval echo \$ATF_${t}) ;\
@@ -109,6 +117,12 @@ ENV UBOOT_FILES_imx8mp_epc_r3720 "flash.bin"
 ENV UBOOT_CONFIG_imx8mp_epc_r3720 "imx8mp_rsb3720a1_6G"
 ENV UBOOT_DTB_imx8mp_epc_r3720 "arch/arm/dts/imx8mp-rsb3720-a1.dtb"
 ENV FLASH_OFFSET_imx8mp_epc_r3720 "32"
+
+# u-boot target and files for imx8mp_edmg
+ENV UBOOT_FILES_imx8mp_edmg "flash.bin"
+ENV UBOOT_CONFIG_imx8mp_edmg "edm-g-imx8mp"
+ENV UBOOT_DTB_imx8mp_edmg "arch/arm/dts/imx8mp-edm-g.dtb"
+ENV FLASH_OFFSET_imx8mp_edmg "32"
 
 # hadolint ignore=SC2086
 RUN for target in ${UBOOT_TARGETS}; do \
