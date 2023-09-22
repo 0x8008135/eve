@@ -1,0 +1,36 @@
+From cb56306b587ffdc11371caa5c66bb53266f6c0ea Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Ren=C3=AA=20de=20Souza=20Pinto?= <rene@renesp.com.br>
+Date: Fri, 15 Sep 2023 10:14:13 +0200
+Subject: [PATCH] arm: dts: Add RTC DS1307 on RPi 4
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Add DTS node for RTC DS1307 (at i2c1) on Raspberry PI 4 Model B.
+
+Signed-off-by: Renê de Souza Pinto <rene@renesp.com.br>
+---
+ arch/arm64/boot/dts/broadcom/bcm2711-rpi-4-b.dts | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/broadcom/bcm2711-rpi-4-b.dts b/arch/arm64/boot/dts/broadcom/bcm2711-rpi-4-b.dts
+index 6abea2e0d024..b7298655d6d6 100644
+--- a/arch/arm64/boot/dts/broadcom/bcm2711-rpi-4-b.dts
++++ b/arch/arm64/boot/dts/broadcom/bcm2711-rpi-4-b.dts
+@@ -13,3 +13,13 @@ slb9670: slb9670@1 {
+ 		status = "okay";
+ 	};
+ };
++
++&i2c1 {
++	status = "okay";
++
++	ds1307: ds1307@68 {
++		compatible = "dallas,ds1307";
++		reg = <0x68>;
++		status = "okay";
++	};
++};
+-- 
+2.40.1
+
